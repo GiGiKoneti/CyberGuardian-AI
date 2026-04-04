@@ -9,3 +9,4 @@ sqlalchemy
 networkx
 pydantic
 gymnasium
+stable-baselines3
