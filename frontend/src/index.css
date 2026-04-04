@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-cyber-dark text-slate-300 font-sans antialiased;
+  }
+}
+
+.glow-red {
+  box-shadow: 0 0 10px #ff003c, 0 0 20px #ff003c, inset 0 0 5px #ff003c;
+}
+
+.glow-green {
+  box-shadow: 0 0 10px #00ff41, 0 0 20px #00ff41, inset 0 0 5px #00ff41;
+}
+
+.glow-blue {
+  box-shadow: 0 0 10px #00f0ff, 0 0 20px #00f0ff, inset 0 0 5px #00f0ff;
+}
+
+.glow-yellow {
+  box-shadow: 0 0 10px #facc15, 0 0 20px #facc15, inset 0 0 5px #facc15;
+}
+
+.glass-panel {
+  background: rgba(10, 25, 47, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 240, 255, 0.2);
+}

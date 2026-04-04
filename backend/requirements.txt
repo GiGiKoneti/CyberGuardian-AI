@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+websockets
+python-multipart
+pyngrok
+huggingface_hub
+python-dotenv
+sqlalchemy
+networkx
+pydantic
+gymnasium
