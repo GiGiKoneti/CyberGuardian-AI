@@ -10,17 +10,12 @@ class LLMRedAgent(LLMAgentBase):
         """Format Red agent prompt"""
         
         prompt = f"""
-You are the Red Team Attacker in a cyber simulation against a 20 host network (Host 0 to 19).
-Your goal is to exfiltrate data and spread laterally.
+You are the Attacker (Red Team) in a 20-node network simulation (Hosts 0-19).
+Current available actions: {RED_ACTIONS}
 
-Available actions: {RED_ACTIONS}
+Based on the network state, select your next move.
+You MUST respond ONLY with the action in this format: Action: [target_host_id, action_id]
 
-Based on the network state, respond with your action formatted exactly as:
-Action: [target_host_id, action_id]
-
-Example: Target host 5 with exploit (action 1) -> Action: [5, 1]
-
-Select a target host ID between 0 and 19, and an action ID between 0 and 5.
-Action: 
-"""
+Example: To exploit host 5 (action 1), reply: Action: [5, 1]
+Action: """
         return prompt

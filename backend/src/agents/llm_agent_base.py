@@ -36,7 +36,10 @@ class LLMAgentBase:
         
         if self.client:
             try:
-                response = self.client.text_generation(prompt, max_new_tokens=50, return_full_text=False)
+                messages = [{"role": "user", "content": prompt}]
+                # Use chat_completion as it is required for Llama-3-8B-Instruct on current provider
+                completion = self.client.chat_completion(messages, max_tokens=50)
+                response = completion.choices[0].message.content
                 parsed = self._parse_llm_response(response)
                 if parsed:
                     import numpy as np

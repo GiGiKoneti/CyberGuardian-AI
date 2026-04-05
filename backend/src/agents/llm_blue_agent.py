@@ -10,17 +10,12 @@ class LLMBlueAgent(LLMAgentBase):
         """Format Blue agent prompt"""
         
         prompt = f"""
-You are the Blue Team Defender in a cyber simulation.
-Your goal is to detect and isolate compromised hosts out of a 20 host network (Host 0 to 19).
+You are the Defender (Blue Team) in a 20-node network simulation (Hosts 0-19).
+Current available actions: {BLUE_ACTIONS}
 
-Available actions: {BLUE_ACTIONS}
+Based on the network alerts, select your next move.
+You MUST respond ONLY with the action in this format: Action: [target_host_id, action_id]
 
-Based on the network alerts, respond with your action formatted exactly as:
-Action: [target_host_id, action_id]
-
-Example: Target host 2 with isolate (action 1) -> Action: [2, 1]
-
-Select a target host ID between 0 and 19, and an action ID between 0 and 5.
-Action: 
-"""
+Example: To isolate host 2 (action 1), reply: Action: [2, 1]
+Action: """
         return prompt
