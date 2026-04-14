@@ -3,7 +3,7 @@ import { MainLayout } from './components/layout/MainLayout';
 import { Toaster } from 'react-hot-toast';
 import { NetworkTopology } from './components/visualization/NetworkTopology';
 import { useSimulationStore } from './store/simulationStore';
-import { FastForward, Link as LinkIcon } from 'lucide-react';
+// Icons removed to improve load times
 
 function App() {
   const { nodes, links, logs, isConnected, startSimulation, generateStep, apiBaseUrl, setApiBaseUrl } = useSimulationStore();
@@ -30,7 +30,7 @@ function App() {
         {/* Controls Bar */}
         <div className="glass-panel p-4 rounded-xl flex items-center justify-between z-50 shrink-0 pointer-events-auto">
           <form onSubmit={handleConnect} className="flex items-center gap-2">
-            <LinkIcon className="text-[#00f0ff] w-5 h-5 pointer-events-auto" />
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#00f0ff] pointer-events-auto"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
             <input 
               type="text" 
               value={urlInput}
@@ -53,7 +53,7 @@ function App() {
               disabled={!isConnected}
               className="group flex items-center gap-2 px-4 py-2 rounded-lg bg-[#00ff41]/10 text-[#00ff41] border border-[#00ff41]/30 hover:bg-[#00ff41]/20 disabled:opacity-50 disabled:cursor-not-allowed font-mono cursor-pointer"
             >
-              <FastForward className="w-4 h-4 group-hover:fill-current transition-all" />
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover:fill-current transition-all"><polygon points="13 19 22 12 13 5 13 19"></polygon><polygon points="2 19 11 12 2 5 2 19"></polygon></svg>
               TRIGGER AI THINK STEP
             </button>
           </div>

@@ -8,11 +8,13 @@ from ..simulation.log_generator import LogGenerator
 class CyberSecurityEnv(gym.Env):
     metadata = {"render_modes": ["human", "rgb_array"], "render_fps": 4}
     
-    def __init__(self, num_hosts: int = 20, max_steps: int = 100, render_mode: Optional[str] = None):
+    def __init__(self, num_hosts: int = 20, max_steps: int = 100, render_mode: Optional[str] = None, w_p: float = 1.0, w_t: float = 2.0):
         super().__init__()
         self.num_hosts = num_hosts
         self.max_steps = max_steps
         self.render_mode = render_mode
+        self.w_p = w_p
+        self.w_t = w_t
         self.network = NetworkTopology(num_hosts=num_hosts)
         self.log_generator = LogGenerator()
         
@@ -49,6 +51,7 @@ class CyberSecurityEnv(gym.Env):
         self.false_positives = 0
         self.true_positives = 0
         self.logs = []
+        self.red_action_sequence = []
         
         return self._get_observation(), self._get_info()
     
@@ -60,8 +63,16 @@ class CyberSecurityEnv(gym.Env):
         red_reward, red_logs = self._execute_red_action(int(red_target), int(red_type))
         blue_reward, blue_logs = self._execute_blue_action(int(blue_target), int(blue_type))
         
+        # Priority 2: Genesis Memory Sequence
+        self.red_action_sequence.append(f"[{int(red_target)}, {int(red_type)}]")
+        
         self.logs.extend(red_logs)
         self.logs.extend(blue_logs)
+        
+        # Priority 3: Mathematical Reward Alignment
+        delta_p = -len(self.isolated_hosts)  # Nodes offline reduce throughput
+        delta_t_magnitude = len(self.compromised_hosts)  # Infected nodes represent threat activity
+        blue_reward += (self.w_p * delta_p) - (self.w_t * delta_t_magnitude)
         
         self._update_network_state()
         
@@ -199,4 +210,6 @@ class CyberSecurityEnv(gym.Env):
             "false_positives": self.false_positives,
             "red_caught": self.red_caught,
             "logs": self.logs[-5:],
+            "red_action_sequence": self.red_action_sequence,
+            "red_victory": (self.data_exfiltrated >= 1000) or (len(self.compromised_hosts) > self.num_hosts * 0.75)
         }
