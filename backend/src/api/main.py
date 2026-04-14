@@ -30,6 +30,17 @@ async def lifespan(app: FastAPI):
         
     if os.path.exists(ppo_path) or os.path.exists(f"{ppo_path}.zip"):
         print(f"Deploying Autonomous Deep RL Defender from {ppo_path}...")
+        
+        # Stable Baselines3's load() strictly requires a .zip file format
+        # If GitHub synced the unzipped folder, we instantly re-compress it!
+        if os.path.isdir(ppo_path):
+            import shutil
+            print(f"Compressing GitHub directory {ppo_path} into a .zip payload for SB3...")
+            shutil.make_archive(ppo_path, 'zip', ppo_path)
+            ppo_path = f"{ppo_path}.zip"
+        elif not ppo_path.endswith('.zip') and os.path.exists(f"{ppo_path}.zip"):
+            ppo_path = f"{ppo_path}.zip"
+            
         from stable_baselines3 import PPO
         try:
             app_state["blue_model"] = PPO.load(ppo_path)
