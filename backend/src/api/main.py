@@ -21,7 +21,21 @@ app_state = {
 async def lifespan(app: FastAPI):
     print("Loading models via LLM Proxy...")
     app_state["red_model"] = LLMRedAgent()
-    app_state["blue_model"] = LLMBlueAgent()
+    
+    # Check if the PPO model exists
+    import os
+    ppo_path = "blue_ppo_bot.zip"
+    if not os.path.exists(ppo_path):
+        ppo_path = "../blue_ppo_bot.zip"
+    
+    if os.path.exists(ppo_path):
+        print(f"Deploying Autonomous Deep RL Defender from {ppo_path}...")
+        from stable_baselines3 import PPO
+        app_state["blue_model"] = PPO.load(ppo_path)
+    else:
+        print("PPO Model not found. Falling back to LLM Proxy for Defender...")
+        app_state["blue_model"] = LLMBlueAgent()
+        
     yield
     print("Shutting down...")
 
